@@ -7,4 +7,8 @@ console.log("router loaded ");
 
 router.get('/',home_contoller.home);
 
+router.use('/users',require('./users'));
+
+router.use('/public',require('./public_user'));
+
 module.exports = router;
