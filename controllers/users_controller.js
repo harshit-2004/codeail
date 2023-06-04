@@ -1,11 +1,24 @@
 const User = require('../models/user')
 
-module.exports.profile = function(req,res){
-    return res.render('home',
-    {
-        title:"User controller"
-    })
+module.exports.profile = async function(req,res){
+    console.log(req.cookie);
+    if(req.user_id){
+        var user = await User.findById(req.cookie.user_id);
+        if(user)
+        {
+            return res.render('profile',
+            {
+                title:"User controller",
+                user:user
+            })
+        }else{
+            return res.redirect('/users/signin');
+        }
+    }else{
+        return res.redirect('/users/signin');
+    }
 }
+
 
 module.exports.signup = function(req,res){
     return res.render('signup',{
@@ -63,6 +76,22 @@ module.exports.create = async function (req, res) {
   
 
 //  get the sign up data
-module.exports.createSession = function(req,res){
-    
+module.exports.createSession = async function(req,res){
+    try{
+        var user = await User.findOne({email:req.body.email});
+        if(!user)
+        {
+            console.log("User not found ");
+            return res.redirect("back");
+        }
+        if(user.password!=req.body.password)
+        {
+            console.log("Password Incorrect ",user.password+" "+req.password);
+            return res.redirect("back");
+        }
+        res.cookie('user_id',user.id);
+        return res.redirect("/users/profile");
+    }catch(err){
+        console.log('Error ',err);
+    }
 }
