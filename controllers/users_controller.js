@@ -1,46 +1,35 @@
 const User = require('../models/user')
 
+const passport = require('passport');
+
 module.exports.profile = function(req,res){
-    return res.render('home',
+    return res.render('profile',
     {
-        title:"User controller"
+        title:"User controller in profile page"
     })
 }
 
 module.exports.signup = function(req,res){
+
+    if(req.isAuthenticated())
+    {
+      return res.redirect("/users/profile");
+    }
     return res.render('signup',{
         title:"Codeil sign up"
     })
 }
 
 module.exports.signin = function(req,res){
+
+    if(req.isAuthenticated())
+    {
+      return res.redirect("/users/profile");
+    }
     return res.render('signin',{
         title:"Codeil sign in"
     })
 }
-
-//  get the sign in data
-// module.exports.create = async function(req,res){
-//     if(req.body.password!=req.body.confirm_password)
-//     {
-//         return res.redirect('back');
-//     }
-//     try{
-//         var fetchingdata = await User.findOne({email:req.body.email},async function(user){
-//             if(!user){
-//                 var newuser = await User.create(req.body, function(err, user){
-//                     if(err) {console. log('error in creating user while signing up'); return}
-//                     return res.redirect('/users/signin');
-//                 })
-//             }
-//             else{
-//                 return res.redirect('back');
-//             }
-//         })
-//     }catch(err){
-//         console.log("error found in creating new element",err);
-//     }
-// }
 
 module.exports.create = async function (req, res) {
     if (req.body.password != req.body.confirm_password) {
@@ -62,7 +51,15 @@ module.exports.create = async function (req, res) {
   };
   
 
-//  get the sign up data
-module.exports.createSession = function(req,res){
-    
+//  get the sign in and create a session
+module.exports.createSession = function(req, res){
+  console.log("its me here in createsessio ");
+  return res.redirect('/');
 }
+
+module.exports.destroySession = function(req, res) {
+  req.logout(function(err){
+    console.log("error in making value ",err);
+  });
+  return res.redirect('/');
+};
