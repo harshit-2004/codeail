@@ -1,24 +1,24 @@
 <header>
-    Page Header
 
-    <ul>
+    <a href="/" id="logo">Codeial</a>
+    <ul class="onefun">
         <% if (locals.user){ %>
             <li>
-                <a href="/users/profile">
+                <a href="/users/profile" id="username">
                     <%= user.name %>
                 </a>
             </li>
             <li>
-                <a href="/users/signout">Sign Out</a>
+                <a href="/users/signout" id="userout">Sign Out</a>
             </li>
         <% }else{ %>
 
             <li>
-                <a href="/users/signin">Sign In</a>
+                <a href="/users/signin" id="userin">Sign In</a>
             </li>
 
             <li>
-                <a href="/users/signup">Sign Up</a>
+                <a href="/users/signup" id="userup">Sign Up</a>
             </li>
 
 

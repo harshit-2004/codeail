@@ -1,12 +1,21 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title%></title>
-</head>
-<body> -->
     <h1>Codeial <%= title%></h1>
-<!-- </body>
-</html> -->
+<section id="feed-post">
+    
+    <% if(locals.user){%>
+        <h4>Posts</h4>
+        <form action="/posts/feed" id="new-post-formed" method='post'>
+            <textarea name="content" id="" cols="30" rows="3" placeholder="Type here..."></textarea>
+            <input type="submit" value="Post">
+        </form>
+        <%}%>
+        <h4>Recent Posts</h4>
+    <ul>
+        <%for(let it of arr){%>
+            <li>
+                <%= it.content%>
+                <br>
+                    <%= it.user.name %>
+            </li>
+        <%}%>
+    </ul>
+</section>

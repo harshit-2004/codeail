@@ -1,0 +1,11 @@
+footer {
+  background-color: black;
+}
+
+footer ul {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  margin: 0px 10px 0px 10px;
+}

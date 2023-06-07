@@ -1,11 +1,16 @@
-module.exports.home = function(req,res){
-    console.log(req.cookies);
-    // res.cookie('user_id',25);
-    if(req.cookies.user_id==25)
-    {
-        console.log("Yes cookie value is equal to 25");
-    }
-    return res.render('home',{
-        title:"Home"
-    })
+const passport = require('passport');
+
+const Post = require('../models/post');
+const { populate } = require('../models/post');
+
+module.exports.home = async function(req,res){
+    Post.find({}).populate('user').exec().then((posts) => {
+      return res.render('home', {
+        title: "Home",
+        arr: posts
+      });
+    }).catch((err) => {
+      console.log(`Error in finding all posts: ${err}`);
+    });
+  
 }

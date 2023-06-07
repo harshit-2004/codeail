@@ -7,6 +7,8 @@ console.log("router loaded ");
 
 router.get('/',home_contoller.home);
 
+router.use('/posts',require('./posts'));
+
 router.use('/users',require('./users'));
 
 router.use('/public',require('./public_user'));
