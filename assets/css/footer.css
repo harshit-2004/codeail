@@ -5,7 +5,7 @@ footer {
 footer ul {
   color: white;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   list-style-type: none;
   margin: 0px 10px 0px 10px;
 }
