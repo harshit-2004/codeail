@@ -8,4 +8,6 @@ const postController = require('../controllers/posts_controller');
 
 router.post('/feed',passport.checkAuthentication,postController.feed);
 
+router.get('/destroy/:id',passport.checkAuthentication,postController.destroy);
+
 module.exports= router;

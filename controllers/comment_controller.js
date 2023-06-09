@@ -23,3 +23,23 @@ module.exports.create = async function(req,res){
         console.log(`Error find then see it ${err}`);
       }
 }
+
+module.exports.destroy = async function(req,res){
+  const comm = await Comment.findById(req.params.id);
+  console.log(comm);
+  if(req.user.id==comm.user)
+  {
+    const post_id = comm.post;
+    console.log("post id "+post_id);
+    await Post.updateOne(
+      { _id: post_id }, // Use "_id" for searching by document ID
+      { $pull: { comments: comm._id } } // Specify the field as an array and provide the comment ID to remove
+    );
+    
+    await Comment.findByIdAndDelete(comm._id);
+    
+    return res.redirect('back');
+  }else{
+    return res.redirect('back');
+  }
+}

@@ -8,4 +8,6 @@ const CommentController = require('../controllers/comment_controller');
 
 router.post('/create',passport.checkAuthentication,CommentController.create);
 
+router.get('/destroy/:id',passport.checkAuthentication,CommentController.destroy);
+
 module.exports = router;

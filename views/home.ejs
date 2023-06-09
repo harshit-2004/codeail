@@ -12,6 +12,11 @@
     <ul>
         <%for(let it of arr){%>
             <li>
+                <% if(locals.user && (locals.user.id==it.user.id)){%>
+                <small>
+                    <a href="/posts/destroy/<%=it.id%>">x</a>
+                </small>
+                <%}%>
                 <%= it.content%>
                 <br>
                     <%= it.user.name %>
@@ -33,6 +38,11 @@
                     <ul id="post-comment-<%=it._id%>">
                         <%for(com of it.comments){%>
                             <li>
+                                <% if(locals.user && (locals.user.id==com.user.id)){%>
+                                    <small>
+                                        <a href="/comment/destroy/<%=com.id%>">x</a>
+                                    </small>
+                                    <%}%>
                                 <%= com.content%>
                                 <br>
                                 <%= com.user.name%>
