@@ -2,11 +2,14 @@ const User = require('../models/user')
 
 const passport = require('passport');
 
-module.exports.profile = function(req,res){
+module.exports.profile = async function(req,res){
+    const us = await User.findById(req.params.id);
+    console.log("hello me in profile user controller");
     return res.render('profile',
     {
-        title:"User controller in profile page"
-    })
+        title:"User controller in profile page",
+        profile_user:us
+    }) ;
 }
 
 module.exports.signup = function(req,res){

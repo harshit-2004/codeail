@@ -1,5 +1,7 @@
 const passport = require('passport');
 
+const User = require('../models/user');
+
 const Post = require('../models/post');
 const { populate } = require('../models/post');
 
@@ -13,10 +15,13 @@ module.exports.home = async function(req,res){
       }
     })
     .exec()
-    .then((posts) => {
+    .then(async (posts) => {
+      const us = await User.find({});
+      console.log(us);
       return res.render('home', {
         title: "Home",
-        arr: posts
+        arr: posts,
+        all_user:us
       });
     }).catch((err) => {
       console.log(`Error in finding all posts: ${err}`);

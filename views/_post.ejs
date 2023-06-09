@@ -1,0 +1,31 @@
+<li>
+    <% if(locals.user && (locals.user.id==it.user.id)){%>
+    <small>
+        <a href="/posts/destroy/<%=it.id%>">x</a>
+    </small>
+    <%}%>
+    <%= it.content%>
+    <br>
+        <%= it.user.name %>
+    <br>
+    
+    <% if(locals.user){%>
+        <!--                This is throuth Query  
+            <form action="/comment/create?_id=<%=it._id%>" id="new-comment-formed" method='post'>
+            <textarea name="content" id="" cols="40" rows="1" placeholder="Type here to add comments .."></textarea>
+            <input type="submit" value="Comment">
+        </form> -->
+        <form action="/comment/create" id="new-comment-formed" method='post'>
+            <textarea name="content" id="" cols="40" rows="1" placeholder="Type here to add comments .." required></textarea>
+            <input type="hidden" name="post_value" id="postvalue" value="<%= it._id %>" >
+            <input type="submit" value="Comment">
+        </form>
+    <%}%>
+    <div id="post-comments-list">
+        <ul id="post-comment-<%=it._id%>">
+            <%for(com of it.comments){%>
+                <%- include('_comment',{com:com}) -%>
+            <%}%>
+        </ul>
+    </div>
+</li>
