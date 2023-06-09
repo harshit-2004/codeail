@@ -4,12 +4,26 @@ const passport = require('passport');
 
 module.exports.profile = async function(req,res){
     const us = await User.findById(req.params.id);
-    console.log("hello me in profile user controller");
     return res.render('profile',
     {
         title:"User controller in profile page",
         profile_user:us
     }) ;
+}
+
+module.exports.update = async function(req,res){
+  if(req.user.id==req.params.id)
+  {
+    try{
+      const user = await User.findByIdAndUpdate(req.params.id,req.body);
+    }catch(err)
+    {
+      console.log(`show me the error ${err}`);
+    }
+    return res.redirect('back');
+  }else{
+    return res.status(401).send('Unauthorized');
+  }
 }
 
 module.exports.signup = function(req,res){
@@ -19,9 +33,9 @@ module.exports.signup = function(req,res){
       return res.redirect("/users/profile");
     }
     return res.render('signup',{
-        title:"Codeil sign up"
+      title:"Codeil sign up"
     })
-}
+  }
 
 module.exports.signin = function(req,res){
 

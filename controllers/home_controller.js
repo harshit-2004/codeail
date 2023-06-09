@@ -17,7 +17,6 @@ module.exports.home = async function(req,res){
     .exec()
     .then(async (posts) => {
       const us = await User.find({});
-      console.log(us);
       return res.render('home', {
         title: "Home",
         arr: posts,
