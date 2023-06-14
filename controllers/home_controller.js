@@ -7,6 +7,7 @@ const { populate } = require('../models/post');
 
 module.exports.home = async function(req,res){
     Post.find({})
+    .sort('-createdAt')
     .populate('user')
     .populate({
       path:'comments',

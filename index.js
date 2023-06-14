@@ -23,22 +23,23 @@ const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
 
 const customMware = require('./config/middleware');
+
 const { connect } = require('mongoose');
 
 app.use(function(req, res, next) {
     res.setHeader('Cache-Control', 'no-store');
     next();
-  });
+});
 
 app.use(sassMiddleware({
     src: __dirname + '/assets/scss',
     dest: __dirname + '/assets/css',
-    debug:true,
+    debug:false,
     outputStyle:'expanded',
     prefix:'/css'
 }));
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true}));
 
 app.use(cookieParser());
 
@@ -64,8 +65,6 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl :"mongodb://localhost:27017/mydatabase",
         autoRemove:'disabled'
-    },function(err){
-        console.log("show error"+err||"connect mongodb setup ok");
     })
 }))
 
@@ -73,11 +72,16 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-app.use(passport.setAuthenticatedUser);
-
 app.use(flash());
 
 app.use(customMware.setFlash);
+
+app.use(passport.setAuthenticatedUser);
+
+app.use(express.static('assets'))
+
+// Make the path available to browser
+app.use('/uploads',express.static(__dirname+'/uploads')); 
 
 //              Use express router 
 app.use('/',require('./routes'));

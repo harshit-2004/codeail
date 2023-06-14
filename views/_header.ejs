@@ -4,7 +4,7 @@
     <ul class="onefun">
         <% if (locals.user){ %>
             <li>
-                <a href="/users/profile" id="username">
+                <a href="/users/profile/<%=user._id%>" id="username">
                     <%= user.name %>
                 </a>
             </li>

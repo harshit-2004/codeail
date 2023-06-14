@@ -9,11 +9,13 @@
         </form>
         <%}%>
         <h4>Recent Posts</h4>
-    <ul>
-        <%for(let it of arr){%>
-            <%- include('_post',{it:it}) -%>
-        <%}%>
-    </ul>
+        <div id="posts-list-container">
+            <ul>
+                <%for(let it of arr){%>
+                    <%- include('_post',{it:it}) -%>
+                <%}%>
+            </ul>
+        </div>
 </section>
 
 <section id="user-friends">
@@ -26,3 +28,5 @@
         </p>
     <%}%>
 </section>
+
+<script src="/js/home_post.js"></script>
