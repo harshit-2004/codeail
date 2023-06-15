@@ -15,4 +15,6 @@ router.use('/public',require('./public_user'));
 
 router.use('/comment',require('./comments'));
 
+router.use('/api',require('./api'));
+
 module.exports = router;
