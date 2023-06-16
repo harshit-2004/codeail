@@ -24,11 +24,17 @@ const Comment = require('../../../models/comment');
     try {
       const post = await Post.findById(req.params.id);
   
-        await Post.findByIdAndDelete(post._id);
-        await Comment.deleteMany({ post: req.params.id });
-          return res.json(200,{
-            message:"Post Deleted Succesfull"
-          })
+        if(post.user==req.user.id){
+            await Post.findByIdAndDelete(post._id);
+            await Comment.deleteMany({ post: req.params.id });
+                return res.json(200,{
+                    message:"Post Deleted Succesfull"
+                })
+        }else{
+            return res.json(401,{
+                message:"You are not authorized to delete it"
+            })
+        }
     } catch (err) {
         console.log(err);
         return res.json(500,{
