@@ -20,6 +20,8 @@ const passportJwt = require('./config/passport-jwt');
 
 const passportGoogle = require('./config/passport-google-auth20-strategy');
 
+const nodemailer = require('nodemailer');
+
 const MongoStore = require('connect-mongo');
 
 const sassMiddleware = require('node-sass-middleware');
