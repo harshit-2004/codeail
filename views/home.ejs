@@ -5,6 +5,7 @@
         <h4>Posts</h4>
         <form action="/posts/feed" id="new-post-formed" method='post'>
             <textarea name="content" id="" cols="30" rows="3" placeholder="Type here..." required></textarea>
+            <input type="hidden" name="user_name" id="user_name" value="<%=locals.user%>">
             <input type="submit" value="Post">
         </form>
         <%}%>
@@ -29,4 +30,13 @@
     <%}%>
 </section>
 
+<script src="/js/home_post_comments.js"></script>
 <script src="/js/home_post.js"></script>
+
+<script src="js/toggle_like.js"></script>
+<script>
+    $('.likebutton').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>

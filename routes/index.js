@@ -13,6 +13,8 @@ router.use('/users',require('./users'));
 
 router.use('/public',require('./public_user'));
 
+router.use('/likes',require('./likes'));
+
 router.use('/comment',require('./comments'));
 
 router.use('/api',require('./api'));

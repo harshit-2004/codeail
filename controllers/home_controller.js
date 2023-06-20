@@ -3,18 +3,21 @@ const passport = require('passport');
 const User = require('../models/user');
 
 const Post = require('../models/post');
+
 const { populate } = require('../models/post');
 
 module.exports.home = async function(req,res){
     Post.find({})
     .sort('-createdAt')
-    .populate('user')
+    .populate('user','name')
     .populate({
-      path:'comments',
-      populate:{
-        path:'user'
-      }
+      path: 'comments',
+      populate: [
+        { path: 'user', select: 'name' },
+        { path: 'likes' }
+      ]
     })
+    .populate('likes')
     .exec()
     .then(async (posts) => {
       const us = await User.find({});

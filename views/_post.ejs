@@ -1,13 +1,27 @@
 <li id="post-<%=it._id%>">
-    <% if(locals.user && (locals.user.id==it.user.id)){%>
-    <small>
-        <a class="delete-push-botton" href="/posts/destroy/<%=it.id%>">x</a>
-    </small>
-    <%}%>
-    <%= it.content%>
-    <br>
-        <%= it.user.name %>
-    <br>
+    <p>
+
+        <% if(locals.user && (locals.user.id==it.user.id)){%>
+        <small>
+            <a class="delete-push-botton" href="/posts/destroy/<%=it.id%>">X</a>
+        </small>
+        <%}%>
+        <%= it.content  %>
+        <br>
+            <small>
+                <%= it.user.name %>
+            </small>
+        <br>
+        <small>
+            <% if(locals.user){ %>
+                <a href="/likes/toggle?id=<%=it._id%>&type=Post" data-likes="<%=it.likes.length%>" class="likebutton"> <i class="fa fa-heart"> </i>
+                    <%=it.likes.length %> Likes
+                </a>
+            <%}else{%>
+                <%=it.likes.length%> Likes
+            <%}%>
+        </small>
+    </p>
     
     <% if(locals.user){%>
         <!--                This is throuth Query  
@@ -15,13 +29,16 @@
             <textarea name="content" id="" cols="40" rows="1" placeholder="Type here to add comments .."></textarea>
             <input type="submit" value="Comment">
         </form> -->
-        <form action="/comment/create" id="new-comment-formed" method='post'>
-            <textarea name="content" id="" cols="40" rows="1" placeholder="Type here to add comments .." required></textarea>
-            <input type="hidden" name="post_value" id="postvalue" value="<%= it._id %>" >
-            <input type="submit" value="Comment">
-        </form>
+        <div class="comments-form">
+            <form action="/comment/create" id="post-<%=it.id%>-comments-form" method='post'>
+                <textarea name="content" id="" cols="40" rows="1" placeholder="Type here to add comments .." required></textarea>
+                <input type="hidden" name="post_value" id="postvalue" value="<%= it._id %>" >
+                <input type="hidden" name="user_name" id="user_name" value="<%=locals.user%>">
+                <input type="submit" value="Comment">
+            </form>
+        </div>
     <%}%>
-    <div id="post-comments-list">
+    <div class="post-comments-list">
         <ul id="post-comment-<%=it._id%>">
             <%for(com of it.comments){%>
                 <%- include('_comment',{com:com}) -%>

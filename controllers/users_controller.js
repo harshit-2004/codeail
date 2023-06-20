@@ -1,10 +1,18 @@
 const User = require('../models/user')
 
+const ResetPasswordToken = require('../models/resetPasswordToken');
+
 const passport = require('passport');
 
 const fs = require('fs');
 
 const path = require('path');
+
+const queue = require('../config/kue');
+
+const forgetPasswordMailer = require('../mailers/forgetPassword_mailer');
+
+const forgetPasswordWorker = require('../workers/forget_password_worker');
 
 module.exports.profile = async function(req,res){
     const us = await User.findById(req.params.id);
@@ -133,3 +141,71 @@ module.exports.destroySession = function(req, res) {
     return res.redirect('/');
   });
 };
+
+module.exports.forget =  async function(req,res){
+  try{
+    const user = await User.findOne({email:req.body.email});
+    if(user){
+      let fillingrandomvalue = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      let us = await ResetPasswordToken.create({
+        user:user._id,
+        accessToken: fillingrandomvalue,
+        isvalid:true
+      });
+      us = await us.populate('user','email name');
+      let job = queue.create('forgetPassword',us).save(function(err){
+        if(err){console.log("error in saving email queue ",err);}
+        console.log("job id ",job.id);
+      });
+      // return res.status(200).json({
+      //   data:{
+      //     post:us
+      //   },
+      //   message:"Forget Password Access Code send successfully"
+      // });
+      return res.redirect('back');
+    }
+    else
+    return res.redirect("back");
+  }catch(err){
+    console.log("Error in finding email",err);
+  }
+}
+
+module.exports.forgetPasswordPage = function(req,res){
+  return res.render('forget_password',{
+    title:"Forget password page"
+  });
+}
+
+module.exports.resetPassword = async function(req,res){
+  // console.log(req.params.accessToken);
+  return res.render('reset_password',{
+    title:"Reset Password Page",
+    accessToken:req.params.accessToken
+  })
+}
+
+module.exports.resetPasswordCall = async function(req,res){
+    console.log("inside the reset Password call giving the accesstoken",req.params.accessToken);
+    if(req.body.password==req.body.conformPassword){
+      let resetPass = await ResetPasswordToken.findOne({accessToken:req.params.accessToken});
+      if(resetPass&&resetPass.isvalid){
+        resetPass.isvalid= false;
+        resetPass.save();
+        let user = await User.findById(resetPass.user);
+        user.password = req.body.password;
+        user.save();
+        await ResetPasswordToken.findByIdAndDelete(resetPass._id);
+        req.flash('success','Password updated successfully');
+        return res.redirect('/users/signin');
+      }else{
+        req.flash('success',"Try again token not match");
+        return res.redirect('back');
+      }
+    }
+    else{
+      req.flash('success',"Both Passwords does not match");
+      return res.redirect('back');
+    }
+}
