@@ -61,7 +61,7 @@
                     <div class="comments-form">
                         
                             <form id="post-${ post._id }-comments-form" action="/comments/create" method="POST">
-                                <input type="text" name="content" placeholder="Type Here to add comment..." required>
+                                <input type="text" name="content" cols="30" rows="3" placeholder="Type Here to add comment..." required>
                                 <input type="hidden" name="post_value" value="${ post._id }" >
                                 <input type="hidden" name="user_name" id="user_name" value="<%=locals.user%>">
                                 <input type="submit" value="Add Comment">

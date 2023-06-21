@@ -32,6 +32,30 @@ const customMware = require('./config/middleware');
 
 const { connect } = require('mongoose');
 
+const chatServer = require('http').Server(app);
+
+const chatSockets = require('./config/chat_socket').chatSockets(chatServer);
+
+const socketPort = 3000;
+chatServer.listen(socketPort, function(err) {
+  if (err) {
+    console.log("error in listening port in 5", err);
+  }
+  console.log("socket is listening on port", socketPort);
+});
+
+// const httpServer = require("http").Server(app);
+
+// const chat_socket = require('./config/chat_socket').chatSockets(httpServer);
+
+// httpServer.listen(3000, function(err) {
+//   if (err) {
+//     console.log("Error: ", err);
+//   } else {
+//     console.log("Server running successfully on port 3000");
+//   }
+// });
+
 app.use(function(req, res, next) {
     res.setHeader('Cache-Control', 'no-store');
     next();

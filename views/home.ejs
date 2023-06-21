@@ -1,34 +1,39 @@
-    <h1>Codeial <%= title%></h1>
-<section id="feed-post">
+<link rel="stylesheet" href="/css/home.css"> 
+<link rel="stylesheet" href="/css/chatengine.css">   
     
-    <% if(locals.user){%>
-        <h4>Posts</h4>
-        <form action="/posts/feed" id="new-post-formed" method='post'>
-            <textarea name="content" id="" cols="30" rows="3" placeholder="Type here..." required></textarea>
-            <input type="hidden" name="user_name" id="user_name" value="<%=locals.user%>">
-            <input type="submit" value="Post">
-        </form>
-        <%}%>
-        <h4>Recent Posts</h4>
-        <div id="posts-list-container">
-            <ul>
-                <%for(let it of arr){%>
-                    <%- include('_post',{it:it}) -%>
-                <%}%>
-            </ul>
-        </div>
-</section>
+    <h1>Codeial <%= title%></h1>
+<div id="home-container">
+    <section id="feed-post">    
+        <% if(locals.user){%>
+            <h4>Posts</h4>
+            <form action="/posts/feed" id="new-post-formed" method='post'>
+                <textarea name="content" id="" cols="30" rows="3" placeholder="Type here..." required></textarea>
+                <input type="hidden" name="user_name" id="user_name" value="<%=locals.user%>">
+                <input type="submit" value="Post">
+            </form>
+            <%}%>
+            <h4>Recent Posts</h4>
+            <div id="posts-list-container">
+                <ul>
+                    <%for(let it of arr){%>
+                        <%- include('_post',{it:it}) -%>
+                    <%}%>
+                </ul>
+            </div>
+    </section>
 
-<section id="user-friends">
-    <h4>Friends</h4>
-    <% for(u of all_user){ %>
-        <p>
-            <a href="/users/profile/<%=u.id%>">
-                <%= u.name%>
-            </a>
-        </p>
-    <%}%>
-</section>
+    <section id="user-friends">
+        <h4>Friends</h4>
+        <% for(u of all_user){ %>
+            <p>
+                <a href="/users/profile/<%=u.id%>">
+                    <%= u.name%>
+                </a>
+            </p>
+        <%}%>
+    </section>
+    <%- include('chat_box'); %>
+</div>
 
 <script src="/js/home_post_comments.js"></script>
 <script src="/js/home_post.js"></script>
@@ -40,3 +45,11 @@
         let toggleLike = new ToggleLike(self);
     });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js" ></script>
+<script src="/js/chat_engine.js"></script>
+  <%  if(locals.user){ %>
+    <script>
+        new ChatEngine('user-chat-box','<%=locals.user.email%>')
+    </script>
+ <% }%>
