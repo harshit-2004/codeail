@@ -1,0 +1,12 @@
+footer {
+  background-color: black;
+  position: relative;
+  width: 100%;
+}
+
+footer ul {
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+}

@@ -2,9 +2,15 @@ const express = require('express');
 
 const cookieParser = require('cookie-parser');
 
+const env = require('./config/environment');
+
+const logger = require('morgan');
+
 const app = express();
 
 const port = "8000";
+
+const path = require('path');
 
 const expressLayouts = require('express-ejs-layouts');
 
@@ -44,34 +50,27 @@ chatServer.listen(socketPort, function(err) {
   console.log("socket is listening on port", socketPort);
 });
 
-// const httpServer = require("http").Server(app);
-
-// const chat_socket = require('./config/chat_socket').chatSockets(httpServer);
-
-// httpServer.listen(3000, function(err) {
-//   if (err) {
-//     console.log("Error: ", err);
-//   } else {
-//     console.log("Server running successfully on port 3000");
-//   }
-// });
-
 app.use(function(req, res, next) {
     res.setHeader('Cache-Control', 'no-store');
     next();
 });
 
-app.use(sassMiddleware({
-    src: __dirname + '/assets/scss',
-    dest: __dirname + '/assets/css',
-    debug:false,
-    outputStyle:'expanded',
-    prefix:'/css'
-}));
+// if(env.name=='development'){
+    app.use(sassMiddleware({
+        src: path.join(__dirname,env.assets_path,'scss'),
+        dest: path.join(__dirname,env.assets_path,'css'),
+        debug:false,
+        outputStyle:'expanded',
+        prefix:'/css'
+    }));
+// }
+
 
 app.use(express.urlencoded({extended:true}));
 
 app.use(cookieParser());
+
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 app.use(expressLayouts);
 // extract style and scripts from sub pages into the layout
@@ -85,7 +84,7 @@ app.set('views','./views');
         // mongo store the session cookie in mongo
 app.use(session({
     name:'Harshitcookie',
-    secret:'blahsomething',
+    secret:env.session_cookie_key,
     saveUninitialized:false,
     resave:false,
     cookie:{
@@ -108,7 +107,7 @@ app.use(customMware.setFlash);
 
 app.use(passport.setAuthenticatedUser);
 
-app.use(express.static('assets'))
+app.use(express.static(env.assets_path));
 
 // Make the path available to browser
 app.use('/uploads',express.static(__dirname+'/uploads')); 

@@ -4,11 +4,13 @@ const JWTStrategy = require('passport-jwt').Strategy;
 
 const EXTRACTJWT = require('passport-jwt').ExtractJwt;
 
+const env = require('./environment');
+
 const User = require('../models/user');
 
 let opts = {
     jwtFromRequest : EXTRACTJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey : 'codeial'
+    secretOrKey : env.jwt_secret_key
 }
 
 passport.use(new JWTStrategy(opts, async function(jwtPayLoad,done){
