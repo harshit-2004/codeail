@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="/css/home.css"> 
-<link rel="stylesheet" href="/css/chatengine.css">   
+<link rel="stylesheet" href="<%=assetsPath('css/home.css')%>"> 
+<link rel="stylesheet" href="<%=assetsPath('css/chatengine.css')%>">   
     
     <h1>Codeial <%= title%></h1>
 <div id="home-container">
@@ -35,10 +35,10 @@
     <%- include('chat_box'); %>
 </div>
 
-<script src="/js/home_post_comments.js"></script>
-<script src="/js/home_post.js"></script>
+<script src="<%=assetsPath('js/home_post_comments.js')%>"></script>
+<script src="<%=assetsPath('js/home_post.js')%>"></script>
 
-<script src="js/toggle_like.js"></script>
+<script src="<%=assetsPath('js/toggle_like.js')%>"></script>
 <script>
     $('.likebutton').each(function(){
         let self = this;
@@ -47,7 +47,7 @@
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js" ></script>
-<script src="/js/chat_engine.js"></script>
+<script src="<%=assetsPath('js/chat_engine.js')%>"></script>
   <%  if(locals.user){ %>
     <script>
         new ChatEngine('user-chat-box','<%=locals.user.email%>')

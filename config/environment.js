@@ -85,5 +85,5 @@ const production = {
 // }
 
 console.log(process.env.CODIAL_ENVIRONMENT_PATH);
-module.exports = process.env.CODIAL_ENVIRONMENT_PATH==undefined?development:process.env.CODIAL_ENVIRONMENT_PATH;
+module.exports = eval(process.env.CODIAL_ENVIRONMENT_PATH)==undefined?development:eval(process.env.CODIAL_ENVIRONMENT_PATH);
 // module.exports=development;
