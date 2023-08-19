@@ -10,7 +10,7 @@ const app = express();
 
 require('./config/view-helper')(app);
 
-const port = "9000";
+const port = "8000";
 
 const path = require('path');
 
