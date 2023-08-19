@@ -46,10 +46,9 @@ module.exports.update = async function(req,res){
         if(err){
           console.log("****MULter Error :",err);
         }
-
         user.name = req.body.name;
         user.email = req.body.email;
-
+        console.log(req.file);
         if(req.file){
           if(user.avatar){
             fs.access(path.join(__dirname,'..',user.avatar), fs.constants.F_OK, (err) => {
@@ -69,7 +68,6 @@ module.exports.update = async function(req,res){
           }
         }
          return res.redirect('back');
-
       })
     }catch(err){
       req.flash('error',err);

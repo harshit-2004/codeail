@@ -10,7 +10,7 @@ const app = express();
 
 require('./config/view-helper')(app);
 
-const port = "8000";
+const port = "9000";
 
 const path = require('path');
 
@@ -57,7 +57,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-if(env.name=='development'){
+// if(env.name=='development'){
     app.use(sassMiddleware({
         src: path.join(__dirname,env.assets_path,'scss'),
         dest: path.join(__dirname,env.assets_path,'css'),
@@ -65,7 +65,7 @@ if(env.name=='development'){
         outputStyle:'expanded',
         prefix:'/css'
     }));
-}
+// }
 
 
 app.use(express.urlencoded({extended:true}));
